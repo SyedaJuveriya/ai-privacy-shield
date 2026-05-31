@@ -107,7 +107,9 @@ python tray.py
 
 | SAFE State | ALERT State |
 |---|---|
-| 1 face detected — green dashboard | 2+ faces — red alert + blur |
+| <img width="1917" height="946" alt="image" src="https://github.com/user-attachments/assets/381be9cd-edbb-4fc3-a668-89d7761efc6d" />
+ | <img width="1842" height="773" alt="Screenshot 2026-05-21 142002" src="https://github.com/user-attachments/assets/9030f0bd-d7c8-4b08-82e8-7a37600c74ed" />
+ |
 
 ---
 
