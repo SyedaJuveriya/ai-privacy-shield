@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Privacy Shield</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --safe-color: #22c55e;
+            --alert-color: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: var(--card-bg);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .status-card {
+            padding: 2rem;
+            border-radius: 1rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .face-count {
+            font-size: 4rem;
+            font-weight: 800;
+            margin: 0.5rem 0;
+        }
+
+        .face-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+
+        .safe {
+            border-color: var(--safe-color);
+            color: var(--safe-color);
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .alert {
+            border-color: var(--alert-color);
+            color: var(--alert-color);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        .refresh-indicator {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Privacy Shield</h1>
+        <p class="subtitle">Shoulder Surfing Protection System</p>
+        
+        <div id="status-card" class="status-card safe">
+            <div id="status-text" class="status-text">Initializing...</div>
+            <div id="face-count" class="face-count">0</div>
+            <div class="face-label">Faces Detected</div>
+        </div>
+
+        <div class="refresh-indicator">
+            Updating every 2 seconds
+        </div>
+    </div>
+
+    <script>
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                
+                const card = document.getElementById('status-card');
+                const text = document.getElementById('status-text');
+                const count = document.getElementById('face-count');
+
+                count.innerText = data.face_count;
+                text.innerText = data.status;
+
+                if (data.code === 'ALERT') {
+                    card.className = 'status-card alert';
+                } else if (data.code === 'SAFE') {
+                    card.className = 'status-card safe';
+                } else {
+                    card.className = 'status-card';
+                }
+            } catch (error) {
+                console.error('Error fetching status:', error);
+            }
+        }
+
+        // Initial update
+        updateStatus();
+        
+        // Refresh every 2 seconds
+        setInterval(updateStatus, 2000);
+    </script>
+</body>
+</html>
